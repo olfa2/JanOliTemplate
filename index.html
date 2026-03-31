@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFZ-Meisterbetrieb [Firmenname] | Ihre Werkstatt in [Stadt]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1f2937;
+        }
+
+        .bg-primary {
+            background-color: var(--primary);
+        }
+
+        .text-primary {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body class="font-sans text-gray-900">
+
+    <!-- TOP BAR -->
+    <div class="bg-gray-900 text-white py-2 px-6 flex justify-between text-sm hidden md:flex">
+        <span><i class="fas fa-map-marker-alt text-primary mr-2"></i> [Straße, PLZ Stadt]</span>
+        <span><i class="fas fa-clock text-primary mr-2"></i> Mo-Fr: 08:00 - 17:00 Uhr</span>
+        <a href="tel:[Telefonnummer]"><i class="fas fa-phone text-primary mr-2"></i> [Telefonnummer]</a>
+    </div>
+
+    <!-- NAVIGATION -->
+    <header class="sticky top-0 z-50 bg-white shadow-md py-4 px-6 flex justify-between items-center">
+        <div class="text-2xl font-bold uppercase tracking-tighter">[Logo / <span class="text-primary">Name</span>]</div>
+        <nav class="hidden lg:flex space-x-6 font-semibold">
+            <a href="index.html" class="text-primary">Start</a>
+            <a href="leistungen.html" class="hover:text-primary">Leistungen</a>
+            <a href="ueber-uns.html" class="hover:text-primary">Über uns</a>
+            <a href="referenzen.html" class="hover:text-primary">Referenzen</a>
+            <a href="kontakt.html" class="hover:text-primary">Kontakt</a>
+        </nav>
+        <a href="kontakt.html"
+            class="bg-primary text-white px-5 py-2 rounded-md font-bold hover:opacity-90 transition">Termin buchen</a>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative h-[70vh] flex items-center justify-center text-white overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1486006396193-471a2abc8817?q=80&w=2000"
+            class="absolute inset-0 w-full h-full object-cover" alt="Werkstatt">
+        <div class="absolute inset-0 bg-black opacity-60"></div>
+        <div class="relative z-10 text-center px-4 max-w-4xl">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 uppercase">Ihr KFZ-Partner in <span
+                    class="text-primary">[Stadt]</span></h1>
+            <p class="text-xl md:text-2xl mb-8">[Slogan: Kompetent. Schnell. Fair.] – Wir bringen Ihr Fahrzeug sicher
+                zurück auf die Straße.</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="leistungen.html" class="bg-primary text-white px-8 py-4 rounded font-bold text-lg">Unsere
+                    Leistungen</a>
+                <a href="tel:[Telefonnummer]" class="bg-white text-gray-900 px-8 py-4 rounded font-bold text-lg"><i
+                        class="fas fa-phone mr-2"></i> Direkt anrufen</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- USPs -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
+            <div class="text-center p-6 bg-white shadow-sm rounded">
+                <i class="fas fa-tools text-4xl text-primary mb-4"></i>
+                <h3 class="font-bold text-xl mb-2 text-gray-800">Meisterbetrieb</h3>
+                <p class="text-gray-600 text-sm">Höchste Qualität durch erfahrene KFZ-Meister und modernste Technik.</p>
+            </div>
+            <div class="text-center p-6 bg-white shadow-sm rounded">
+                <i class="fas fa-calendar-check text-4xl text-primary mb-4"></i>
+                <h3 class="font-bold text-xl mb-2 text-gray-800">Kurze Wartezeiten</h3>
+                <p class="text-gray-600 text-sm">Dank effizienter Planung erhalten Sie schnell Ihren Wunschtermin.</p>
+            </div>
+            <div class="text-center p-6 bg-white shadow-sm rounded">
+                <i class="fas fa-search-dollar text-4xl text-primary mb-4"></i>
+                <h3 class="font-bold text-xl mb-2 text-gray-800">Transparente Preise</h3>
+                <p class="text-gray-600 text-sm">Keine versteckten Kosten. Wir sprechen Reparaturen vorher mit Ihnen ab.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-gray-400 py-12 px-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 text-sm">
+            <div>
+                <div class="text-white text-xl font-bold mb-4 uppercase">[Firmenname]</div>
+                <p>Ihre zuverlässige Werkstatt in [Stadt]. Qualität und Sicherheit für Ihr Auto.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="leistungen.html" class="hover:text-white">Leistungen</a></li>
+                    <li><a href="ueber-uns.html" class="hover:text-white">Über uns</a></li>
+                    <li><a href="kontakt.html" class="hover:text-white">Kontakt</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Kontakt</h4>
+                <p>[Straße Hausnr.]<br>[PLZ Stadt]<br><br>Tel: [Telefonnummer]<br>E-Mail: [E-Mail]</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Rechtliches</h4>
+                <ul class="space-y-2">
+                    <li><a href="rechtliches.html" class="hover:text-white">Impressum</a></li>
+                    <li><a href="rechtliches.html" class="hover:text-white">Datenschutz</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

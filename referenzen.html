@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referenzen | [Firmenname]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+        }
+
+        .bg-primary {
+            background-color: var(--primary);
+        }
+
+        .text-primary {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header wie oben -->
+
+    <main class="py-20 px-6 max-w-7xl mx-auto">
+        <h1 class="text-4xl font-extrabold uppercase mb-12 text-center text-gray-900">Unsere Arbeit</h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+                class="bg-gray-200 aspect-video rounded-lg flex items-center justify-center text-gray-500 italic shadow-md overflow-hidden relative group">
+                <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=600"
+                    class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-4 text-xs uppercase">
+                    Motorinstandsetzung [Fahrzeugmodell]</div>
+            </div>
+            <div
+                class="bg-gray-200 aspect-video rounded-lg flex items-center justify-center text-gray-500 italic shadow-md overflow-hidden relative group">
+                <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?q=80&w=600"
+                    class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-4 text-xs uppercase">
+                    Bremsenservice [Fahrzeugmodell]</div>
+            </div>
+            <!-- Mehr Platzhalter -->
+        </div>
+    </main>
+</body>
+
+</html>

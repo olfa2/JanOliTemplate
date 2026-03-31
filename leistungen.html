@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <!-- Head Bereich identisch mit index.html -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leistungen | [Firmenname]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+        }
+
+        .bg-primary {
+            background-color: var(--primary);
+        }
+
+        .text-primary {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header identisch mit index.html (nur Nav-Active-State anpassen) -->
+    <header class="sticky top-0 z-50 bg-white shadow-md py-4 px-6 flex justify-between items-center text-gray-900">
+        <div class="text-2xl font-bold uppercase">[Logo / <span class="text-primary">Name</span>]</div>
+        <nav class="hidden lg:flex space-x-6 font-semibold">
+            <a href="index.html">Start</a>
+            <a href="leistungen.html" class="text-primary">Leistungen</a>
+            <a href="ueber-uns.html">Über uns</a>
+            <a href="referenzen.html">Referenzen</a>
+            <a href="kontakt.html">Kontakt</a>
+        </nav>
+        <a href="kontakt.html" class="bg-primary text-white px-5 py-2 rounded-md font-bold">Termin buchen</a>
+    </header>
+
+    <main class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl font-extrabold uppercase mb-4 text-gray-900">Unsere Leistungen</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">Wir bieten Ihnen das komplette Spektrum moderner
+                KFZ-Dienstleistungen für PKW aller Marken.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Leistung Card -->
+            <div class="border p-8 rounded-lg hover:shadow-xl transition group">
+                <div
+                    class="w-14 h-14 bg-gray-100 flex items-center justify-center rounded text-primary text-2xl mb-6 group-hover:bg-primary group-hover:text-white transition">
+                    <i class="fas fa-oil-can"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 uppercase">[Leistung 1: Inspektion]</h3>
+                <p class="text-gray-600 mb-6 text-sm">Wartung nach Herstellervorgaben inklusive Mobilitätsgarantie und
+                    Eintrag ins Serviceheft.</p>
+                <a href="kontakt.html" class="text-primary font-bold hover:underline">Anfragen →</a>
+            </div>
+
+            <div class="border p-8 rounded-lg hover:shadow-xl transition group">
+                <div
+                    class="w-14 h-14 bg-gray-100 flex items-center justify-center rounded text-primary text-2xl mb-6 group-hover:bg-primary group-hover:text-white transition">
+                    <i class="fas fa-tire"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 uppercase">[Leistung 2: Reifenservice]</h3>
+                <p class="text-gray-600 mb-6 text-sm">Reifenwechsel, Auswuchten und Einlagerung Ihrer Sommer- oder
+                    Winterräder.</p>
+                <a href="kontakt.html" class="text-primary font-bold hover:underline">Anfragen →</a>
+            </div>
+
+            <div class="border p-8 rounded-lg hover:shadow-xl transition group">
+                <div
+                    class="w-14 h-14 bg-gray-100 flex items-center justify-center rounded text-primary text-2xl mb-6 group-hover:bg-primary group-hover:text-white transition">
+                    <i class="fas fa-car-battery"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 uppercase">[Leistung 3: Diagnose]</h3>
+                <p class="text-gray-600 mb-6 text-sm">Fehlersuche mit modernsten Diagnosegeräten für alle gängigen
+                    Fahrzeughersteller.</p>
+                <a href="kontakt.html" class="text-primary font-bold hover:underline">Anfragen →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer identisch mit index.html einfügen -->
+</body>
+
+</html>
