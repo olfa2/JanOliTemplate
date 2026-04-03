@@ -3,7 +3,6 @@ import { Resend } from "resend";
 import { config } from "../../../config";
 import { customerTemplate, workshopTemplate } from "../../../lib/email-templates";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const rate = new Map();
 
 function getIp(request) {
@@ -28,12 +27,8 @@ function overLimit(ip, max = 5) {
 function validate(input) {
   const errors = [];
   if (!input.name || input.name.length < 2) errors.push("Name ungueltig");
-  if (!input.phone || input.phone.length < 5) errors.push("Telefon ungueltig");
   if (!input.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email)) errors.push("E-Mail ungueltig");
-  if (!input.vehicleBrand) errors.push("Marke fehlt");
-  if (!input.vehicleModel) errors.push("Modell fehlt");
-  if (!input.licensePlate) errors.push("Kennzeichen fehlt");
-  if (!input.message || input.message.length < 10) errors.push("Nachricht zu kurz");
+  if (!input.service) errors.push("Leistung fehlt");
   if (!input.consent) errors.push("Datenschutzzustimmung fehlt");
   if (input.website) errors.push("Spam erkannt");
   return errors;
@@ -41,9 +36,15 @@ function validate(input) {
 
 export async function POST(request) {
   try {
-    if (!process.env.RESEND_API_KEY || !process.env.EMAIL_FROM) {
-      return NextResponse.json({ ok: false, error: "Mail-Konfiguration fehlt" }, { status: 500 });
+    const { RESEND_API_KEY, EMAIL_FROM, NOTIFICATION_EMAIL } = process.env;
+    if (!RESEND_API_KEY || !EMAIL_FROM || !NOTIFICATION_EMAIL) {
+      return NextResponse.json({ 
+        ok: false, 
+        error: "Mail-Konfiguration unvollständig (RESEND_API_KEY, EMAIL_FROM, NOTIFICATION_EMAIL)" 
+      }, { status: 500 });
     }
+
+    const resend = new Resend(RESEND_API_KEY);
 
     const ip = getIp(request);
     if (overLimit(ip, Number(process.env.RATE_LIMIT_MAX || 5))) {
@@ -55,6 +56,7 @@ export async function POST(request) {
       name: String(body.name || "").trim(),
       phone: String(body.phone || "").trim(),
       email: String(body.email || "").trim().toLowerCase(),
+      service: String(body.service || "").trim(),
       preferredDate: String(body.preferredDate || "").trim(),
       preferredTime: String(body.preferredTime || "").trim(),
       vehicleBrand: String(body.vehicleBrand || "").trim(),
@@ -73,9 +75,9 @@ export async function POST(request) {
 
     const shop = workshopTemplate(data, config.workshopName);
     await resend.emails.send({
-      from: process.env.EMAIL_FROM,
-      to: process.env.NOTIFICATION_EMAIL || config.notificationEmail,
-      subject: `Neue Terminanfrage von ${data.name}`,
+      from: EMAIL_FROM,
+      to: NOTIFICATION_EMAIL,
+      subject: "Neue KFZ-Anfrage von der Website",
       html: shop.html,
       text: shop.text,
       reply_to: data.email
@@ -83,9 +85,9 @@ export async function POST(request) {
 
     const confirmEnabled = process.env.SEND_CUSTOMER_CONFIRMATION !== "false";
     if (confirmEnabled) {
-      const customer = customerTemplate(data, config.workshopName, Number(process.env.RESPONSE_SLA_HOURS || 24), process.env.NOTIFICATION_EMAIL || config.notificationEmail);
+      const customer = customerTemplate(data, config.workshopName, Number(process.env.RESPONSE_SLA_HOURS || 24), NOTIFICATION_EMAIL);
       await resend.emails.send({
-        from: process.env.EMAIL_FROM,
+        from: EMAIL_FROM,
         to: data.email,
         subject: `Ihre Terminanfrage bei ${config.workshopName}`,
         html: customer.html,
@@ -93,7 +95,7 @@ export async function POST(request) {
       });
     }
 
-    console.info("[booking-mail] sent", { to: process.env.NOTIFICATION_EMAIL || config.notificationEmail, customer: data.email });
+    console.info("[booking-mail] sent", { to: NOTIFICATION_EMAIL, customer: data.email });
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("[booking-mail] failed", error);

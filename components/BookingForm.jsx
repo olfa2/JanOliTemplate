@@ -6,6 +6,7 @@ const initialState = {
   name: "",
   phone: "",
   email: "",
+  service: "",
   preferredDate: "",
   preferredTime: "",
   vehicleBrand: "",
@@ -30,6 +31,23 @@ export default function BookingForm() {
     event.preventDefault();
     setLoading(true);
     setFeedback("");
+
+    if (!formData.name) {
+      setFeedback("Fehler: Name ist erforderlich.");
+      setLoading(false);
+      return;
+    }
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setFeedback("Fehler: Bitte eine gueltige E-Mail-Adresse eingeben.");
+      setLoading(false);
+      return;
+    }
+    if (!formData.service) {
+      setFeedback("Fehler: Bitte waehlen Sie eine Leistung aus.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch("/api/send-booking", {
         method: "POST",
@@ -63,13 +81,23 @@ export default function BookingForm() {
         <input name="vehicleModel" value={formData.vehicleModel} onChange={onChange} className="form-field" placeholder="Modell" required />
         <input name="licensePlate" value={formData.licensePlate} onChange={onChange} className="form-field" placeholder="Kennzeichen" required />
       </div>
-      <textarea name="message" value={formData.message} onChange={onChange} className="form-field" rows={5} placeholder="Beschreibung des Anliegens" required />
+      <select name="service" value={formData.service} onChange={onChange} className="form-field" required>
+        <option value="" disabled>Leistung auswählen *</option>
+        <option value="Inspektion">Inspektion</option>
+        <option value="Ölwechsel">Ölwechsel</option>
+        <option value="Reifenwechsel">Reifenwechsel</option>
+        <option value="Bremsenservice">Bremsenservice</option>
+        <option value="Diagnose">Diagnose</option>
+        <option value="Unfallreparatur">Unfallreparatur</option>
+        <option value="Sonstiges">Sonstiges</option>
+      </select>
+      <textarea name="message" value={formData.message} onChange={onChange} className="form-field" rows={5} placeholder="Zusätzliche Informationen zu Ihrem Anliegen…" />
       <label style={{ display: "flex", gap: "8px", fontSize: "14px", color: "#475569" }}>
         <input name="consent" type="checkbox" checked={formData.consent} onChange={onChange} required />
         <span>Ich stimme der Datenverarbeitung gemaess Datenschutzerklaerung zu.</span>
       </label>
       <button className="button-primary" type="submit" disabled={loading}>{loading ? "Sende..." : "Anfrage senden"}</button>
-      {feedback ? <p>{feedback}</p> : null}
+      {feedback ? <p style={{ color: feedback.startsWith("Fehler") ? "#dc2626" : "#16a34a", fontWeight: "500", marginTop: "8px" }}>{feedback}</p> : null}
     </form>
   );
 }
