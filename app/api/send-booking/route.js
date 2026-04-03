@@ -1,0 +1,102 @@
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
+import { config } from "../../../config";
+import { customerTemplate, workshopTemplate } from "../../../lib/email-templates";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const rate = new Map();
+
+function getIp(request) {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return "unknown";
+}
+
+function overLimit(ip, max = 5) {
+  const now = Date.now();
+  const windowMs = 60 * 60 * 1000;
+  const entry = rate.get(ip) || { count: 0, reset: now + windowMs };
+  if (now > entry.reset) {
+    entry.count = 0;
+    entry.reset = now + windowMs;
+  }
+  entry.count += 1;
+  rate.set(ip, entry);
+  return entry.count > max;
+}
+
+function validate(input) {
+  const errors = [];
+  if (!input.name || input.name.length < 2) errors.push("Name ungueltig");
+  if (!input.phone || input.phone.length < 5) errors.push("Telefon ungueltig");
+  if (!input.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email)) errors.push("E-Mail ungueltig");
+  if (!input.vehicleBrand) errors.push("Marke fehlt");
+  if (!input.vehicleModel) errors.push("Modell fehlt");
+  if (!input.licensePlate) errors.push("Kennzeichen fehlt");
+  if (!input.message || input.message.length < 10) errors.push("Nachricht zu kurz");
+  if (!input.consent) errors.push("Datenschutzzustimmung fehlt");
+  if (input.website) errors.push("Spam erkannt");
+  return errors;
+}
+
+export async function POST(request) {
+  try {
+    if (!process.env.RESEND_API_KEY || !process.env.EMAIL_FROM) {
+      return NextResponse.json({ ok: false, error: "Mail-Konfiguration fehlt" }, { status: 500 });
+    }
+
+    const ip = getIp(request);
+    if (overLimit(ip, Number(process.env.RATE_LIMIT_MAX || 5))) {
+      return NextResponse.json({ ok: false, error: "Zu viele Anfragen" }, { status: 429 });
+    }
+
+    const body = await request.json();
+    const data = {
+      name: String(body.name || "").trim(),
+      phone: String(body.phone || "").trim(),
+      email: String(body.email || "").trim().toLowerCase(),
+      preferredDate: String(body.preferredDate || "").trim(),
+      preferredTime: String(body.preferredTime || "").trim(),
+      vehicleBrand: String(body.vehicleBrand || "").trim(),
+      vehicleModel: String(body.vehicleModel || "").trim(),
+      licensePlate: String(body.licensePlate || "").trim(),
+      message: String(body.message || "").trim(),
+      website: String(body.website || "").trim(),
+      consent: Boolean(body.consent),
+      timestamp: new Date().toISOString()
+    };
+
+    const errors = validate(data);
+    if (errors.length) {
+      return NextResponse.json({ ok: false, error: errors.join(", ") }, { status: 400 });
+    }
+
+    const shop = workshopTemplate(data, config.workshopName);
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM,
+      to: process.env.NOTIFICATION_EMAIL || config.notificationEmail,
+      subject: `Neue Terminanfrage von ${data.name}`,
+      html: shop.html,
+      text: shop.text,
+      reply_to: data.email
+    });
+
+    const confirmEnabled = process.env.SEND_CUSTOMER_CONFIRMATION !== "false";
+    if (confirmEnabled) {
+      const customer = customerTemplate(data, config.workshopName, Number(process.env.RESPONSE_SLA_HOURS || 24), process.env.NOTIFICATION_EMAIL || config.notificationEmail);
+      await resend.emails.send({
+        from: process.env.EMAIL_FROM,
+        to: data.email,
+        subject: `Ihre Terminanfrage bei ${config.workshopName}`,
+        html: customer.html,
+        text: customer.text
+      });
+    }
+
+    console.info("[booking-mail] sent", { to: process.env.NOTIFICATION_EMAIL || config.notificationEmail, customer: data.email });
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error("[booking-mail] failed", error);
+    return NextResponse.json({ ok: false, error: "Versand fehlgeschlagen" }, { status: 500 });
+  }
+}
