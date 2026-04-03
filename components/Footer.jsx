@@ -23,7 +23,7 @@ export default function Footer() {
           <p><Link href="/rechtliches">Impressum</Link><br /><Link href="/rechtliches">Datenschutz</Link></p>
         </div>
       </div>
-      <div className="container-main footer-bottom">© 2026 {config.workshopName}. Alle Rechte vorbehalten.</div>
+      <div className="container-main footer-bottom">&copy; 2026 {config.workshopName}. Alle Rechte vorbehalten.</div>
     </footer>
   );
 }
