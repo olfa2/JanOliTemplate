@@ -9,7 +9,8 @@ export const config = {
   nav: [
     { href: "/", label: "Start" },
     { href: "/leistungen", label: "Leistungen" },
-    { href: "/ueber-uns", label: "Ueber uns" },
+    { href: "/ueber-uns", label: "Über uns" },
+    { href: "/termin", label: "Termin" },
     { href: "/kontakt", label: "Kontakt" }
   ]
 };
