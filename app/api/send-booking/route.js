@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import { config } from "../../../config";
 import { customerTemplate, workshopTemplate } from "../../../lib/email-templates";
 
@@ -36,15 +36,22 @@ function validate(input) {
 
 export async function POST(request) {
   try {
-    const { RESEND_API_KEY, EMAIL_FROM, NOTIFICATION_EMAIL } = process.env;
-    if (!RESEND_API_KEY || !EMAIL_FROM || !NOTIFICATION_EMAIL) {
-      return NextResponse.json({ 
-        ok: false, 
-        error: "Mail-Konfiguration unvollständig (RESEND_API_KEY, EMAIL_FROM, NOTIFICATION_EMAIL)" 
+    const { GMAIL_USER, GMAIL_APP_PASSWORD, NOTIFICATION_EMAIL } = process.env;
+    if (!GMAIL_USER || !GMAIL_APP_PASSWORD || !NOTIFICATION_EMAIL) {
+      return NextResponse.json({
+        ok: false,
+        error: "Mail-Konfiguration unvollständig (GMAIL_USER, GMAIL_APP_PASSWORD, NOTIFICATION_EMAIL)"
       }, { status: 500 });
     }
 
-    const resend = new Resend(RESEND_API_KEY);
+    // Nodemailer Transporter konfigurieren
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: GMAIL_USER,
+        pass: GMAIL_APP_PASSWORD
+      }
+    });
 
     const ip = getIp(request);
     if (overLimit(ip, Number(process.env.RATE_LIMIT_MAX || 5))) {
@@ -73,21 +80,23 @@ export async function POST(request) {
       return NextResponse.json({ ok: false, error: errors.join(", ") }, { status: 400 });
     }
 
+    // Mail an Werkstatt senden
     const shop = workshopTemplate(data, config.workshopName);
-    await resend.emails.send({
-      from: EMAIL_FROM,
+    await transporter.sendMail({
+      from: `${config.workshopName} <${GMAIL_USER}>`,
       to: NOTIFICATION_EMAIL,
       subject: "Neue KFZ-Anfrage von der Website",
       html: shop.html,
       text: shop.text,
-      reply_to: data.email
+      replyTo: data.email
     });
 
+    // Bestätigungsmail an Kunden senden
     const confirmEnabled = process.env.SEND_CUSTOMER_CONFIRMATION !== "false";
     if (confirmEnabled) {
       const customer = customerTemplate(data, config.workshopName, Number(process.env.RESPONSE_SLA_HOURS || 24), NOTIFICATION_EMAIL);
-      await resend.emails.send({
-        from: EMAIL_FROM,
+      await transporter.sendMail({
+        from: `${config.workshopName} <${GMAIL_USER}>`,
         to: data.email,
         subject: `Ihre Terminanfrage bei ${config.workshopName}`,
         html: customer.html,
