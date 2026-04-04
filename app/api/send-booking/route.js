@@ -15,10 +15,12 @@ function overLimit(ip, max = 5) {
   const now = Date.now();
   const windowMs = 60 * 60 * 1000;
   const entry = rate.get(ip) || { count: 0, reset: now + windowMs };
+
   if (now > entry.reset) {
     entry.count = 0;
     entry.reset = now + windowMs;
   }
+
   entry.count += 1;
   rate.set(ip, entry);
   return entry.count > max;
@@ -26,27 +28,35 @@ function overLimit(ip, max = 5) {
 
 function validate(input) {
   const errors = [];
+
   if (!input.name || input.name.length < 2) errors.push("Name ungueltig");
   if (!input.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email)) errors.push("E-Mail ungueltig");
   if (!input.service) errors.push("Leistung fehlt");
   if (!input.consent) errors.push("Datenschutzzustimmung fehlt");
   if (input.website) errors.push("Spam erkannt");
+
   return errors;
 }
 
 export async function POST(request) {
   try {
     const { GMAIL_USER, GMAIL_APP_PASSWORD, NOTIFICATION_EMAIL } = process.env;
-    if (!GMAIL_USER || !GMAIL_APP_PASSWORD || !NOTIFICATION_EMAIL) {
-      return NextResponse.json({
-        ok: false,
-        error: "Mail-Konfiguration unvollständig (GMAIL_USER, GMAIL_APP_PASSWORD, NOTIFICATION_EMAIL)"
-      }, { status: 500 });
-    }
 
-    // Nodemailer Transporter konfigurieren
+    console.log("ENV CHECK:", {
+      GMAIL_USER,
+      GMAIL_APP_PASSWORD: !!GMAIL_APP_PASSWORD,
+      NOTIFICATION_EMAIL
+    });
+    /*
+        if (!GMAIL_USER || !GMAIL_APP_PASSWORD || !NOTIFICATION_EMAIL) {
+          return NextResponse.json({
+            ok: false,
+            error: "Mail-Konfiguration unvollständig (GMAIL_USER, GMAIL_APP_PASSWORD, NOTIFICATION_EMAIL)"
+          }, { status: 500 });
+        }
+    */
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
         user: GMAIL_USER,
         pass: GMAIL_APP_PASSWORD
@@ -54,11 +64,16 @@ export async function POST(request) {
     });
 
     const ip = getIp(request);
+
     if (overLimit(ip, Number(process.env.RATE_LIMIT_MAX || 5))) {
-      return NextResponse.json({ ok: false, error: "Zu viele Anfragen" }, { status: 429 });
+      return NextResponse.json(
+        { ok: false, error: "Zu viele Anfragen" },
+        { status: 429 }
+      );
     }
 
     const body = await request.json();
+
     const data = {
       name: String(body.name || "").trim(),
       phone: String(body.phone || "").trim(),
@@ -76,12 +91,17 @@ export async function POST(request) {
     };
 
     const errors = validate(data);
+
     if (errors.length) {
-      return NextResponse.json({ ok: false, error: errors.join(", ") }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: errors.join(", ") },
+        { status: 400 }
+      );
     }
 
-    // Mail an Werkstatt senden
+    // 📧 Mail an Werkstatt
     const shop = workshopTemplate(data, config.workshopName);
+
     await transporter.sendMail({
       from: `${config.workshopName} <${GMAIL_USER}>`,
       to: NOTIFICATION_EMAIL,
@@ -91,10 +111,17 @@ export async function POST(request) {
       replyTo: data.email
     });
 
-    // Bestätigungsmail an Kunden senden
+    // 📧 Bestätigung an Kunden
     const confirmEnabled = process.env.SEND_CUSTOMER_CONFIRMATION !== "false";
+
     if (confirmEnabled) {
-      const customer = customerTemplate(data, config.workshopName, Number(process.env.RESPONSE_SLA_HOURS || 24), NOTIFICATION_EMAIL);
+      const customer = customerTemplate(
+        data,
+        config.workshopName,
+        Number(process.env.RESPONSE_SLA_HOURS || 24),
+        NOTIFICATION_EMAIL
+      );
+
       await transporter.sendMail({
         from: `${config.workshopName} <${GMAIL_USER}>`,
         to: data.email,
@@ -104,10 +131,22 @@ export async function POST(request) {
       });
     }
 
-    console.info("[booking-mail] sent", { to: NOTIFICATION_EMAIL, customer: data.email });
+    console.info("[booking-mail] sent", {
+      to: NOTIFICATION_EMAIL,
+      customer: data.email
+    });
+
     return NextResponse.json({ ok: true });
+
   } catch (error) {
-    console.error("[booking-mail] failed", error);
-    return NextResponse.json({ ok: false, error: "Versand fehlgeschlagen" }, { status: 500 });
+    console.error("FULL ERROR:", error);
+
+    return NextResponse.json(
+      {
+        ok: false,
+        error: error.message || "Unbekannter Fehler"
+      },
+      { status: 500 }
+    );
   }
 }
