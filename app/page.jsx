@@ -5,9 +5,9 @@ export default function HomePage() {
   return (
     <main>
       {/* HERO SECTION */}
-      <section 
+      <section
         className="relative min-h-[75vh] flex items-center justify-center text-white text-center overflow-hidden"
-        style={{ 
+        style={{
           background: "linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.85)), url('https://images.unsplash.com/photo-1486006396193-471a2abc8817?q=80&w=2000') no-repeat center center/cover"
         }}
       >
@@ -16,7 +16,7 @@ export default function HomePage() {
             Meisterwerkstatt
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold max-w-4xl leading-tight">
-            Modern. Seriös.<br/>
+            Modern. Seriös.<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200">Kompetent.</span>
           </h1>
           <p className="text-lg md:text-xl text-slate-200 max-w-2xl text-center font-medium opacity-90">
@@ -40,7 +40,7 @@ export default function HomePage() {
             <h2 className="section-title">Warum zu uns?</h2>
             <p className="text-slate-500 text-lg max-w-2xl mx-auto">Modernste Diagnosetechnik trifft auf jahrelange Erfahrung. Wir bieten Ihnen Service auf Herstellerniveau.</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1 */}
             <article className="card group hover:ring-2 ring-brand-accent/20 cursor-default">
@@ -82,13 +82,13 @@ export default function HomePage() {
       <section className="section bg-white border-t border-slate-100">
         <div className="container-main">
           <div className="flex flex-col lg:flex-row gap-12 items-center">
-            
+
             <div className="w-full lg:w-1/2">
               <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-brand-dark">Besuchen Sie uns vor Ort</h2>
               <p className="text-slate-600 text-lg mb-8">
                 Unsere Werkstatt ist leicht erreichbar und bietet ausreichend Parkmöglichkeiten direkt vor der Tür. Wir freuen uns, Sie und Ihr Fahrzeug kennenzulernen.
               </p>
-              
+
               <div className="flex flex-col gap-5 mb-10">
                 <div className="flex items-start gap-4">
                   <div className="bg-slate-100 p-3 rounded-full text-brand-accent">
@@ -99,7 +99,7 @@ export default function HomePage() {
                     <p className="text-slate-500">{config.contact.address}</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-4">
                   <div className="bg-slate-100 p-3 rounded-full text-brand-accent">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -118,12 +118,12 @@ export default function HomePage() {
 
             <div className="w-full lg:w-1/2 h-[450px] relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
               {/* Fallback Google Maps iframe (Replace src with actual Maps Embed URL) */}
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2662.628864703908!2d11.575490000000001!3d48.137154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDjCsDA4JzEzLjgiTiAxMcKwMzQnMzEuOCJF!5e0!3m2!1sde!2sde!4v1620000000000!5m2!1sde!2sde" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen="" 
+              <iframe
+                src="https://www.google.com/maps/place/Haindorf+12,+3384+Haindorf/@48.1760522,15.4743506,17z/data=!4m10!1m2!2m1!1shaindorf+12!3m6!1s0x47727a3fbbfbcf8d:0x8a304627990d6682!8m2!3d48.1757804!4d15.4762764!15sCgtoYWluZG9yZiAxMpIBEWNvbXBvdW5kX2J1aWxkaW5n4AEA!16s%2Fg%2F11gmfvpyk2?entry=ttu&g_ep=EgoyMDI2MDQwMS4wIKXMDSoASAFQAw%3D%3D"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
                 loading="lazy"
                 title="Standort Karte"
                 className="absolute inset-0 grayscale-[20%] hover:grayscale-0 transition-all duration-700"

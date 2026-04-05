@@ -40,4 +40,7 @@ Die Datei `.env.local` enthaelt alle Variablen:
 - Sticky Header + Mobile-Menue
 - Einheitlicher Footer mit Kontakt, Social, Rechtlichem
 - Terminformular mit Validierung, Honeypot, Rate-Limit
-- E-Mail an Werkstatt + Bestätigung an Kunden
+- E-Mail an Werkstatt + Bestï¿½tigung an Kunden
+
+
+errinnerungsfunktion evtl., multiauswahl bei leistungen, preis, kalenderfuntkion, gebrauchtfahrzeuge, 

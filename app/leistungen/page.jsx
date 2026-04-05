@@ -9,9 +9,9 @@ export default function LeistungenPage() {
   return (
     <main>
       {/* 1. HERO SECTION */}
-      <section 
+      <section
         className="relative min-h-[50vh] flex items-center justify-center text-white text-center overflow-hidden"
-        style={{ 
+        style={{
           background: "linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.85)), url('https://images.unsplash.com/photo-1503376712353-c04549aca9c4?q=80&w=2000') no-repeat center center/cover"
         }}
       >
@@ -29,18 +29,18 @@ export default function LeistungenPage() {
       {/* 2. ALTERNATING LAYOUTS FOR TOP SERVICES */}
       <section className="section bg-white">
         <div className="container-main flex flex-col gap-24">
-          
+
           {/* Service 1 */}
           <div className="flex flex-col lg:flex-row gap-12 items-center">
             <div className="w-full lg:w-1/2 h-80 rounded-2xl overflow-hidden shadow-xl">
-               <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?q=80&w=1000" alt="Inspektion & Wartung" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?q=80&w=1000" alt="Inspektion & Wartung" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
             </div>
             <div className="w-full lg:w-1/2 flex flex-col gap-4">
               <div className="text-brand-accent tracking-widest uppercase font-bold text-sm">Prävention</div>
               <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark">Inspektion & Wartung</h2>
               <p className="text-slate-600 text-lg leading-relaxed">
-                Wir führen Inspektionen streng nach den aktuellen Herstellervorgaben durch. 
-                Damit bleibt nicht nur die Werksgarantie Ihres Fahrzeugs erhalten, sondern Sie beugen 
+                Wir führen Inspektionen streng nach den aktuellen Herstellervorgaben durch.
+                Damit bleibt nicht nur die Werksgarantie Ihres Fahrzeugs erhalten, sondern Sie beugen
                 auch teuren Folgeschäden vor. Jeder Service wird in Ihrem digitalen Serviceheft dokumentiert.
               </p>
               <ul className="mt-4 flex flex-col gap-2 text-slate-700 font-medium">
@@ -54,14 +54,14 @@ export default function LeistungenPage() {
           {/* Service 2 */}
           <div className="flex flex-col lg:flex-row-reverse gap-12 items-center">
             <div className="w-full lg:w-1/2 h-80 rounded-2xl overflow-hidden shadow-xl">
-               <img src="https://images.unsplash.com/photo-1632823469850-fd8da8b9e6fa?q=80&w=1000" alt="Fehlerdiagnose" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              <img src="https://images.unsplash.com/photo-1632823469850-fd8da8b9e6fa?q=80&w=1000" alt="Fehlerdiagnose" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
             </div>
             <div className="w-full lg:w-1/2 flex flex-col gap-4">
               <div className="text-brand-accent tracking-widest uppercase font-bold text-sm">Hightech Mechanik</div>
               <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark">Moderne Fehlerdiagnose</h2>
               <p className="text-slate-600 text-lg leading-relaxed">
-                Leuchtet eine Warnlampe? Moderne Fahrzeuge bestehen aus tausenden elektronischen Bauteilen. 
-                Mit unseren State-of-the-Art Diagnosegeräten lesen wir den Fehlerspeicher zügig und präzise aus, 
+                Leuchtet eine Warnlampe? Moderne Fahrzeuge bestehen aus tausenden elektronischen Bauteilen.
+                Mit unseren State-of-the-Art Diagnosegeräten lesen wir den Fehlerspeicher zügig und präzise aus,
                 um das Problem an der Wurzel zu packen, anstatt nur Symptome zu bekämpfen.
               </p>
               <ul className="mt-4 flex flex-col gap-2 text-slate-700 font-medium">
@@ -71,7 +71,7 @@ export default function LeistungenPage() {
               </ul>
             </div>
           </div>
-          
+
         </div>
       </section>
 
@@ -79,7 +79,7 @@ export default function LeistungenPage() {
       <section className="section bg-slate-50 border-t border-slate-200">
         <div className="container-main text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-brand-dark mb-12">Weitere Leistungen</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <article className="card flex flex-col items-center text-center group">
               <div className="bg-blue-100 text-brand-accent p-4 rounded-full mb-4 group-hover:bg-brand-accent group-hover:text-white transition-colors duration-300">
@@ -135,13 +135,13 @@ export default function LeistungenPage() {
 
       {/* 5. FOOTER CTA */}
       <section className="py-24 bg-brand-light text-center">
-         <div className="container-main flex flex-col items-center gap-6">
-           <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark">Überzeugt? Lassen Sie uns reden.</h2>
-           <p className="text-lg text-slate-500 max-w-2xl mb-4">Vereinbaren Sie jetzt schnell und unverbindlich einen Termin für Ihr Fahrzeug.</p>
-           <Link className="button-primary text-lg !px-10 !py-4 shadow-xl shadow-brand-accent/30" href="/termin">
-              Jetzt Termin vereinbaren
-            </Link>
-         </div>
+        <div className="container-main flex flex-col items-center gap-6">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-brand-dark">Überzeugt? Lassen Sie uns reden.</h2>
+          <p className="text-lg text-slate-500 max-w-2xl mb-4">Vereinbaren Sie jetzt schnell und unverbindlich einen Termin für Ihr Fahrzeug.</p>
+          <Link className="button-primary text-lg !px-10 !py-4 shadow-xl shadow-brand-accent/30" href="/termin">
+            Jetzt Termin vereinbaren
+          </Link>
+        </div>
       </section>
 
     </main>
